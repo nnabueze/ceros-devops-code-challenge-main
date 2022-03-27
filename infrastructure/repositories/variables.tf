@@ -12,6 +12,13 @@ variable "aws_profile" {
 
 variable "aws_region" {
   type = string
-  default = "eu-west-1"
+  default = "eu-central-1"
   description = "The name of the AWS Region we'll launch into."
 }
+
+variable "ecr_name" {
+  type = string
+  default = "ceros-ski"
+}
+
+
