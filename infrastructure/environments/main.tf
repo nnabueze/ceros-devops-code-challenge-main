@@ -394,7 +394,7 @@ resource "aws_lb_listener" "listener" {
 resource "aws_launch_configuration" "cluster" {
     name = "ceros-ski-${var.environment}-cluster"
     image_id = data.aws_ssm_parameter.cluster_ami_id.value 
-    instance_type = "t2.micro"
+    instance_type = "t2.medium"
     iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
     security_groups = [aws_security_group.ecs_sg.id]
 
@@ -455,8 +455,9 @@ resource "aws_security_group" "ecs_sg" {
 */
 resource "aws_autoscaling_group" "cluster" {
   name = "ceros-ski-${var.environment}-cluster"
-  min_size = 2
-  max_size = 3 
+  min_size = 1
+  max_size = 1
+  desired_capacity = 1 
   
   vpc_zone_identifier = aws_subnet.public_subnet.*.id
   launch_configuration = aws_launch_configuration.cluster.name 
@@ -487,8 +488,10 @@ resource "aws_autoscaling_group" "cluster" {
 resource "aws_ecs_task_definition" "backend" {
   family = "ceros-ski-${var.environment}-backend"
   network_mode = "awsvpc"
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
-  task_role_arn            = aws_iam_role.ecsTaskExecutionRole.arn  
+  requires_compatibilities = ["EC2"]
+  execution_role_arn       = data.aws_iam_role.ecs_service.arn
+  task_role_arn            = data.aws_iam_role.ecs_service.arn  
+  //task_role_arn            = aws_iam_role.ecsTaskExecutionRole.arn
 
   container_definitions = <<EOF
 [
@@ -536,7 +539,7 @@ resource "aws_ecs_service" "backend" {
   cluster = aws_ecs_cluster.cluster.id 
   task_definition = aws_ecs_task_definition.backend.arn
   
-  desired_count = 2
+  desired_count = 1
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent = 100
 
