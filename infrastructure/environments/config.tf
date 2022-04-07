@@ -1,9 +1,10 @@
-provider "aws" {
-  region = var.aws_region 
-  shared_credentials_files = [var.aws_credentials_file]
-  profile = var.aws_profile 
-}
-
 terraform {
   required_version = ">= 0.14.4"
+
+  backend "s3" {
+    bucket = "terraform-state-ceros-ski"
+    key = "global/repository/terraform.tfstate"
+    region = "eu-central-1"
+    profile = "default"
+  }
 }

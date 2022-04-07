@@ -21,4 +21,6 @@ variable "ecr_name" {
   default = "ceros-ski"
 }
 
-
+variable "s3_bucket_name" {
+  default = "terraform-state-ceros-ski"
+}

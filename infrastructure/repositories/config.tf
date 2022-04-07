@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket = "terraform-state-ceros-ski"
-    key = "global/s3/terraform.tfstate"
+    key = "global/repository/terraform.tfstate"
     region = "eu-central-1"
     profile = "default"
   }

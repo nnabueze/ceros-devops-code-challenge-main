@@ -1,48 +1,49 @@
-variable "aws_credentials_file" {
-  type = string
-  default = "/root/.aws/credentials"
-  description = "The file that contains the AWS credentials we will use."
-}
-
-variable "aws_profile" {
-  type = string
-  default = "default"
-  description = "The name of the AWS credentials profile we will use."
+variable "app_name" {
+  type        = string
+  description = "Application name"
 }
 
 variable "aws_region" {
-  type = string
-  default = "eu-central-1"
-  description = "The name of the AWS Region we'll launch into."
+  type        = string
+  description = "Aws region for application deployment"
 }
 
-variable "environment" {
-  type = string
-  description = "The name of the environment we'd like to launch."
-  default = "production"
+variable "aws_secret_file" {
+  type        = string
+  description = "aws access keys"
+}
+
+variable "aws_profile" {
+  type        = string
+  description = "profile in aws credential file"
+}
+
+variable "app_environment" {
+  type        = string
+  description = "Environment the app is running"
+}
+
+variable "public-key-pair" {
+  type        = string
+  description = "public key pair to ssh into aws instances"
+  sensitive   = true
+}
+
+variable "bh-instance-type" {
+  type    = string
+  default = "instance type for bastion host"
+}
+
+variable "ecs-policy-arn" {
+  default = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 variable "repository_url" {
-  type = string
-  default = "480891119046.dkr.ecr.eu-central-1.amazonaws.com/ceros-ski"
-  description = "The url of the ECR repository we'll draw our images from."
+  type        = string
+  description = "ECR respository url"
 }
 
-variable "public_key_path" {
-  type = string
-  default = "/root/.ssh/id_rsa.pub"
-  description = "The public key that will be used to allow ssh access to the bastions."
-  sensitive = true
-}
-
-variable "ecs-iam-role" {
-  type = string
-  default = "ceros-ski-ecs-agent"
-  description = "The IAM role that will be used by the instances "
-}
-
-variable "app_name" {
-  type = string
-  default = "ceros-ski"
-  description = "Application name"
+variable "container_port" {
+  type        = string
+  description = "port the container is exposed"
 }
